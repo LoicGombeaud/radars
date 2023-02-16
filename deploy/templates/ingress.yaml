@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "radars.fullname" . }}
+  labels:
+    {{- include "radars.labels" . | nindent 4 }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  rules:
+  - host: {{ .Values.ingress.host }}
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "radars.fullname" . }}-front
+            port:
+              number: 80
+      - path: /radar
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "radars.fullname" . }}-back
+            port:
+              number: 80
