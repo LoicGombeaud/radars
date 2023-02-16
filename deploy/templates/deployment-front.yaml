@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "radars.fullname" . }}-front
+  labels:
+    {{- include "radars.labels" . | nindent 4 }}
+    component: front
+spec:
+  replicas: {{ .Values.front.replicaCount }}
+  selector:
+  selector:
+    matchLabels:
+      {{- include "radars.selectorLabels" . | nindent 6 }}
+      component: front
+  template:
+    metadata:
+      labels:
+        {{- include "radars.selectorLabels" . | nindent 8 }}
+        component: front
+    spec:
+      containers:
+      - name: front
+        image: "{{ .Values.front.image.repository }}:{{ .Values.front.image.tag }}"
+        ports:
+        - containerPort: 80

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "radars.fullname" . }}-back
+  labels:
+    {{- include "radars.labels" . | nindent 4 }}
+    component: back
+spec:
+  replicas: {{ .Values.back.replicaCount }}
+  selector:
+  selector:
+    matchLabels:
+      {{- include "radars.selectorLabels" . | nindent 6 }}
+      component: back
+  template:
+    metadata:
+      labels:
+        {{- include "radars.selectorLabels" . | nindent 8 }}
+        component: back
+    spec:
+      containers:
+      - name: back
+        image: "{{ .Values.back.image.repository }}:{{ .Values.back.image.tag }}"
+        ports:
+        - containerPort: 80
