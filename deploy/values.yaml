@@ -18,6 +18,60 @@ mariadb:
   auth:
     rootPassword: root #TODO use existingSecret instead
     database: radars
+  initdbScripts:
+    create_table_sensor.sql: |
+      CREATE TABLE sensor(
+        id VARCHAR(20),
+        address VARCHAR(255),
+        latitude DECIMAL(10,7),
+        longitude DECIMAL(10,7),
+        position POINT NOT NULL,
+        speed_limit INT,
+        PRIMARY KEY(id),
+        SPATIAL INDEX(position)
+      );
+    create_table_measurement.sql: |
+      CREATE TABLE measurement (
+        id INT,
+        sensor_id VARCHAR(20),
+        datetime DATETIME,
+        speed INT,
+        PRIMARY KEY(id)
+      );
+    create_table_statistic_hourly.sql: |
+      CREATE TABLE statistic_hourly (
+        sensor_id VARCHAR(20),
+        datetime DATETIME,
+        n_total INT,
+        n_0_to_30 INT,
+        n_30_to_40 INT,
+        n_40_to_50 INT,
+        n_50_to_60 INT,
+        n_60_to_70 INT,
+        n_over_70 INT,
+        v_avg DOUBLE,
+        v_50p DOUBLE,
+        v_85p DOUBLE,
+        v_max DOUBLE,
+        PRIMARY KEY(sensor_id, datetime)
+      );
+    create_table_statistic_daily.sql: |
+      CREATE TABLE statistic_daily (
+        sensor_id VARCHAR(20),
+        datetime DATETIME,
+        n_total INT,
+        n_0_to_30 INT,
+        n_30_to_40 INT,
+        n_40_to_50 INT,
+        n_50_to_60 INT,
+        n_60_to_70 INT,
+        n_over_70 INT,
+        v_avg DOUBLE,
+        v_50p DOUBLE,
+        v_85p DOUBLE,
+        v_max DOUBLE,
+        PRIMARY KEY(sensor_id, datetime)
+      );
 
 nameOverride: ""
 fullnameOverride: ""
