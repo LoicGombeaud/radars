@@ -24,3 +24,10 @@ spec:
             name: {{ include "radars.fullname" . }}-back
             port:
               number: 80
+      - path: /statistics
+        pathType: Prefix
+        backend:
+          service:
+            name: {{ include "radars.fullname" . }}-back
+            port:
+              number: 80
