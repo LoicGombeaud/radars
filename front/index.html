@@ -46,14 +46,17 @@
         p_30_to_40 = Math.round(100 * n_30_to_40 / n_total * 10) / 10;
         n_40_to_50 = dailyStatistics.n_40_to_50;
         p_40_to_50 = Math.round(100 * n_40_to_50 / n_total * 10) / 10;
+        n_over_50 = dailyStatistics.n_50_to_60 + dailyStatistics.n_60_to_70 + dailyStatistics.n_over_70;
+        p_over_50 = Math.round(100 * n_over_50 / n_total * 10) / 10;
 
-        return "<b>Statistiques du jour</b><br>" +
+        return "<b>Statistiques du jour (J-1)</b><br>" +
           "Nombre de mesures : " + n_total + "<br>" +
           "Vitesse moyenne : " + v_avg + " km/h<br>" +
           "Vitesse maximum : " + v_max + " km/h<br>" +
           "Mesures entre 0 et 30 km/h : " + n_0_to_30 + " (" + p_0_to_30 + "%) <br>" +
           "Mesures entre 30 et 40 km/h : " + n_30_to_40 + " (" + p_30_to_40 + "%) <br>" +
-          "Mesures entre 40 et 50 km/h : " + n_40_to_50 + " (" + p_40_to_50 + "%) <br>"
+          "Mesures entre 40 et 50 km/h : " + n_40_to_50 + " (" + p_40_to_50 + "%) <br>" +
+          "Mesures > 50 km/h : " + n_over_50 + " (" + p_over_50 + "%) <br>"
       }
 
       function addRadars() {
