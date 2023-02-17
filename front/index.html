@@ -6,6 +6,7 @@
      <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
              integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
              crossorigin=""></script>
+     <script src='https://cdn.plot.ly/plotly-2.18.0.min.js'></script>
   </head>
   <body>
     <div id="map" style="height: 100%"></div>
@@ -21,42 +22,93 @@
 
       function loadStatistics(radarId) {
         return function() {
+          const hourlyStatisticsReq = new XMLHttpRequest();
+          hourlyStatisticsReq.addEventListener("load", showHourlyStatistics);
+          hourlyStatisticsReq.open("GET", back_url + "/statistics/hourly/" + radarId + "/2023/02/16");
+          hourlyStatisticsReq.send();
+
           const dailyStatisticsReq = new XMLHttpRequest();
-          dailyStatisticsReq.addEventListener("load", showDailyStatistics(this));
+          dailyStatisticsReq.addEventListener("load", showDailyStatistics);
           dailyStatisticsReq.open("GET", back_url + "/statistics/daily/" + radarId + "/2023/02/16");
           dailyStatisticsReq.send();
-
         }
       }
 
-      function showDailyStatistics(radarMarker) {
-        return function() {
-          dailyStatistics = JSON.parse(this.responseText);
-          radarMarker.bindPopup(generateDailyStatisticsHTML(dailyStatistics)).openPopup();
-        }
+      function showDailyStatistics() {
+        dailyStatistics = JSON.parse(this.responseText);
+
+        var data = [{
+          type: "pie",
+          values: [
+            dailyStatistics.n_0_to_30,
+            dailyStatistics.n_30_to_40,
+            dailyStatistics.n_40_to_50,
+            dailyStatistics.n_50_to_60 + dailyStatistics.n_60_to_70 + dailyStatistics.n_over_70,
+          ],
+          labels: [
+            "0 - 30 km/h",
+            "31 - 40 km/h",
+            "41 - 50 km/h",
+            "> 50 km/h",
+          ],
+          marker: {
+            colors: [
+              "#92E000",
+              "#E1FF00",
+              "#F58B00",
+              "#DE3700",
+            ]
+          },
+          textinfo: "label+value",
+          sort: false,
+          direction: "clockwise",
+          showlegend: false,
+        }];
+        var layout = {
+          height: 300,
+          width: 400,
+        };
+        Plotly.newPlot(dailyStatistics.sensor_id + "-pie", data, layout);
+        console.log(data);
       }
 
-      function generateDailyStatisticsHTML(dailyStatistics) {
-        n_total = dailyStatistics.n_total;
-        v_avg = Math.round(dailyStatistics.v_avg * 10) / 10;
-        v_max = dailyStatistics.v_max;
-        n_0_to_30 = dailyStatistics.n_0_to_30;
-        p_0_to_30 = Math.round(100 * n_0_to_30 / n_total * 10) / 10;
-        n_30_to_40 = dailyStatistics.n_30_to_40;
-        p_30_to_40 = Math.round(100 * n_30_to_40 / n_total * 10) / 10;
-        n_40_to_50 = dailyStatistics.n_40_to_50;
-        p_40_to_50 = Math.round(100 * n_40_to_50 / n_total * 10) / 10;
-        n_over_50 = dailyStatistics.n_50_to_60 + dailyStatistics.n_60_to_70 + dailyStatistics.n_over_70;
-        p_over_50 = Math.round(100 * n_over_50 / n_total * 10) / 10;
+      function showHourlyStatistics() {
+        hourlyStatistics = JSON.parse(this.responseText);
 
-        return "<b>Statistiques du jour (J-1)</b><br>" +
-          "Nombre de mesures : " + n_total + "<br>" +
-          "Vitesse moyenne : " + v_avg + " km/h<br>" +
-          "Vitesse maximum : " + v_max + " km/h<br>" +
-          "Mesures entre 0 et 30 km/h : " + n_0_to_30 + " (" + p_0_to_30 + "%) <br>" +
-          "Mesures entre 30 et 40 km/h : " + n_30_to_40 + " (" + p_30_to_40 + "%) <br>" +
-          "Mesures entre 40 et 50 km/h : " + n_40_to_50 + " (" + p_40_to_50 + "%) <br>" +
-          "Mesures > 50 km/h : " + n_over_50 + " (" + p_over_50 + "%) <br>"
+        var data = [
+          {
+            type: "scatter",
+            name: "Vitesse moyenne",
+            x: hourlyStatistics.map(stat => new Date(stat.datetime).getHours() + "h"),
+            y: hourlyStatistics.map(stat => stat.v_avg),
+            marker: {
+              color: "black",
+            },
+          },
+          {
+            type: "scatter",
+            name: "Vitesse 85%",
+            x: hourlyStatistics.map(stat => new Date(stat.datetime).getHours() + "h"),
+            y: hourlyStatistics.map(stat => stat.v_85p),
+            marker: {
+              color: "gray",
+            },
+          },
+          {
+            type: "scatter",
+            name: "Vitesse maximum",
+            x: hourlyStatistics.map(stat => new Date(stat.datetime).getHours() + "h"),
+            y: hourlyStatistics.map(stat => stat.v_max),
+            marker: {
+              color: "red",
+            },
+          },
+        ]
+        var layout = {
+          height: 300,
+          width: 500,
+        }
+        Plotly.newPlot(hourlyStatistics[0].sensor_id + "-chart", data, layout);
       }
 
       function addRadars() {
@@ -64,6 +116,10 @@
         console.log(radars);
         for (const radar of radars) {
           radarMarker = L.marker([radar.latitude, radar.longitude]).addTo(map);
+          radarMarker.bindPopup(
+            "<b>Données J - 1</b><br>" +
+            "Adresse : " + radar.address +
+            "<div id='" + radar.id + "' style='display: flex'><div id='" + radar.id + "-chart'></div><div id='" + radar.id + "-pie'></div></div>", {minWidth: 900});
           radarMarker.addEventListener("click", loadStatistics(radar.id));
         }
       }
