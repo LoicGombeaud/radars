@@ -2,6 +2,8 @@ import mariadb
 import os
 from datetime import datetime
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 
 connection = mariadb.connect(host=os.getenv('DB_HOST'),
                              database=os.getenv('DB_NAME'),
@@ -10,6 +12,15 @@ connection = mariadb.connect(host=os.getenv('DB_HOST'),
 cursor = connection.cursor(dictionary=True)
 
 app = FastAPI()
+
+origins = ['*'] #TODO restrict!
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"])
+
 
 @app.get('/')
 async def root():
