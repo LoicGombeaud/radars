@@ -79,11 +79,11 @@
         var data = [
           {
             type: "scatter",
-            name: "Vitesse moyenne",
+            name: "Vitesse maximum",
             x: hourlyStatistics.map(stat => new Date(stat.datetime).getHours() + "h"),
-            y: hourlyStatistics.map(stat => stat.v_avg),
+            y: hourlyStatistics.map(stat => stat.v_max),
             marker: {
-              color: "black",
+              color: "red",
             },
           },
           {
@@ -97,17 +97,29 @@
           },
           {
             type: "scatter",
-            name: "Vitesse maximum",
+            name: "Vitesse moyenne",
             x: hourlyStatistics.map(stat => new Date(stat.datetime).getHours() + "h"),
-            y: hourlyStatistics.map(stat => stat.v_max),
+            y: hourlyStatistics.map(stat => stat.v_avg),
             marker: {
-              color: "red",
+              color: "black",
+            },
+          },
+          {
+            type: "scatter",
+            name: "Vitesse limite autorisée",
+            x: hourlyStatistics.map(stat => new Date(stat.datetime).getHours() + "h"),
+            y: hourlyStatistics.map(stat => 30),
+            marker: {
+              color: "green",
             },
           },
         ]
         var layout = {
           height: 300,
           width: 500,
+          yaxis: {
+            rangemode: "tozero",
+          },
         }
         Plotly.newPlot(hourlyStatistics[0].sensor_id + "-chart", data, layout);
       }
