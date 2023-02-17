@@ -1,0 +1,11 @@
+INSERT INTO sensor VALUES('20H2105', 'Rue Jacques Nancy bordeaux', POINT(44.83829, -0.58891), 44.83829, -0.58891, 30);
+INSERT INTO sensor VALUES('20H2108', '30 Rue de la Cage Verte bordeaux', POINT(44.86088, -0.62871), 44.86088, -0.62871, 30);
+INSERT INTO sensor VALUES('20H4067', '19 rue Eugène Ténot bordeaux', POINT(44.81947, -0.57348), 44.81947, -0.57348, 30);
+INSERT INTO sensor VALUES('20H2053', '97 rue Billaudel bordeaux', POINT(44.82378, -0.5632), 44.82378, -0.563230, 30);
+INSERT INTO sensor VALUES('20H2103', '38 rue Périnot bordeaux', POINT(44.85305, -0.62861), 44.85305, -0.62861, 30);
+INSERT INTO sensor VALUES('20H2104', '131 rue Belleville bordeaux', POINT(44.8325, -0.5838), 44.8325, -0.5838, 30);
+INSERT INTO sensor VALUES('20H2106', '75 rue Eugène Jacquet bordeaux', POINT(44.82524, -0.61276), 44.82524, -0.61276, 30);
+INSERT INTO sensor VALUES('20H2112', '50 Rue de la Benauge bordeaux', POINT(44.84039, -0.5564), 44.84039, -0.5564, 30);
+INSERT INTO sensor VALUES('20H2110', '72 rue rivière', POINT(44.858143, -0.589356), 44.858143, -0.589356, 30);
+INSERT INTO sensor VALUES('20H2107', '189 rue Georges Mandel', POINT(44.84176, -0.59695), 44.84176, -0.59695, 30);
+INSERT INTO sensor VALUES('20H2111', '29 boulevard Ludovic Trarieux', POINT(44.840257, -0.546356), 44.840257, -0.546356, 30);

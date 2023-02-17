@@ -1,0 +1,4 @@
+requests
+mariadb
+numpy
+python-dateutil
