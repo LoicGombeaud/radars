@@ -25,12 +25,12 @@
         return function() {
           const hourlyStatisticsReq = new XMLHttpRequest();
           hourlyStatisticsReq.addEventListener("load", showHourlyStatistics);
-          hourlyStatisticsReq.open("GET", back_url + "/statistics/hourly/" + radarId + "/2023/02/16");
+          hourlyStatisticsReq.open("GET", back_url + "/statistics/hourly/" + radarId + "/yesterday");
           hourlyStatisticsReq.send();
 
           const dailyStatisticsReq = new XMLHttpRequest();
           dailyStatisticsReq.addEventListener("load", showDailyStatistics);
-          dailyStatisticsReq.open("GET", back_url + "/statistics/daily/" + radarId + "/2023/02/16");
+          dailyStatisticsReq.open("GET", back_url + "/statistics/daily/" + radarId + "/yesterday");
           dailyStatisticsReq.send();
         }
       }
