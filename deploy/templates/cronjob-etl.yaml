@@ -5,17 +5,24 @@ metadata:
   labels:
     {{- include "radars.labels" . | nindent 4 }}
 spec:
-  schedule: "* * * * *"
+  schedule: "0 4 * * *"
   jobTemplate:
     spec:
       template:
         spec:
           containers:
           - name: etl
-            image: busybox:1.28
-            imagePullPolicy: IfNotPresent
-            command:
-            - /bin/sh
-            - -c
-            - date; echo Hello from the Kubernetes cluster
+            image: "{{ .Values.etl.image.repository }}:{{ .Values.etl.image.tag }}"
+            imagePullPolicy: {{ .Values.etl.image.pullPolicy }}
+            env:
+            {{- with .Values.etl.database }}
+            - name: DB_HOST
+              value: {{ .host }}
+            - name: DB_NAME
+              value: {{ .name }}
+            - name: DB_USER
+              value: {{ .user }}
+            - name: DB_PASSWORD
+              value: {{ .password }}
+            {{- end }}
           restartPolicy: OnFailure

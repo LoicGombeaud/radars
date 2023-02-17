@@ -21,6 +21,17 @@ back:
     user: root
     password: root
 
+etl:
+  image:
+    repository: loicag/radars-etl
+    tag: latest
+    pullPolicy: Always
+  database:
+    host: radars-mariadb
+    name: radars
+    user: root
+    password: root
+
 mariadb:
   auth:
     rootPassword: root #TODO use existingSecret instead
