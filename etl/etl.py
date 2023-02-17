@@ -52,9 +52,9 @@ else:
         measurements_file.readline()
         while (line := measurements_file.readline().rstrip()):
             data = line.split(';')
-            datetime = data[2].split('+')[0]
+            dt = data[2].split('+')[0]
             cursor.execute('INSERT IGNORE INTO measurement (id, sensor_id, datetime, speed) VALUES (?, ?, ?, ?)',
-                           (data[0], data[1], datetime, data[3]))
+                           (data[0], data[1], dt, data[3]))
     connection.commit()
 
 yesterday_midnight = datetime.combine(date.today() - timedelta(days=1), time.min)
