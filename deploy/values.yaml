@@ -98,4 +98,4 @@ service:
 
 ingress:
   className: nginx
-  host: radars.loicag.com
+  host: radars.loicgombeaud.com
