@@ -13,6 +13,6 @@ RUN wget https://r.mariadb.com/downloads/mariadb_repo_setup \
 ADD requirements.txt .
 RUN pip install -r requirements.txt
 
-ADD . .
+ADD back.py .
 
 CMD ["uvicorn", "back:app", "--host", "0.0.0.0", "--port", "80", "--proxy-headers"]
