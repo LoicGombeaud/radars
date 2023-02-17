@@ -64,4 +64,4 @@ async def get_hourly_statistics(sensor_id, year, month, day):
     cursor.execute('SELECT * FROM statistic_daily WHERE sensor_id = ? AND datetime = ?',
                    (sensor_id,
                     queried_datetime.isoformat()))
-    return cursor.fetchall()
+    return cursor.fetchone()
