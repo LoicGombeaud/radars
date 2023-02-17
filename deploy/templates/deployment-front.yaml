@@ -21,5 +21,6 @@ spec:
       containers:
       - name: front
         image: "{{ .Values.front.image.repository }}:{{ .Values.front.image.tag }}"
+        imagePullPolicy: {{ .Values.front.image.pullPolicy }}
         ports:
         - containerPort: 80

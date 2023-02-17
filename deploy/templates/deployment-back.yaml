@@ -21,5 +21,17 @@ spec:
       containers:
       - name: back
         image: "{{ .Values.back.image.repository }}:{{ .Values.back.image.tag }}"
+        imagePullPolicy: {{ .Values.back.image.pullPolicy }}
         ports:
         - containerPort: 80
+        env:
+        {{- with .Values.back.database }}
+        - name: DB_HOST
+          value: {{ .host }}
+        - name: DB_NAME
+          value: {{ .name }}
+        - name: DB_USER
+          value: {{ .user }}
+        - name: DB_PASSWORD
+          value: {{ .password }}
+        {{- end }}

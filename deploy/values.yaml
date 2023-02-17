@@ -5,14 +5,21 @@
 front:
   replicaCount: 1
   image:
-    repository: nginx
-    tag: 1.23.3
+    repository: loicag/radars-front
+    tag: latest
+    pullPolicy: Always
 
 back:
   replicaCount: 1
   image:
-    repository: nginx
-    tag: 1.23.3
+    repository: loicag/radars-back
+    tag: latest
+    pullPolicy: Always
+  database:
+    host: radars-mariadb
+    name: radars
+    user: root
+    password: root
 
 mariadb:
   auth:
