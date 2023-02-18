@@ -1,0 +1,27 @@
+{
+  "name": "radars",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "dependencies": {
+    "plotly.js-dist": "^2.18.2",
+    "vue": "^3.2.45",
+    "vue3-tabs-component": "^1.2.0"
+  },
+  "devDependencies": {
+    "@rushstack/eslint-patch": "^1.1.4",
+    "@vitejs/plugin-vue": "^4.0.0",
+    "@vue-leaflet/vue-leaflet": "^0.8.3",
+    "@vue/eslint-config-prettier": "^7.0.0",
+    "eslint": "^8.22.0",
+    "eslint-plugin-vue": "^9.3.0",
+    "leaflet": "^1.9.3",
+    "prettier": "^2.7.1",
+    "vite": "^4.0.0"
+  }
+}
