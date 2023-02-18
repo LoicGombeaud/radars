@@ -22,7 +22,7 @@ export default {
   methods: {
     async fetchRadars() {
       //TODO parametrize?
-      const res = await fetch("http://radars.loicgombeaud.com/radars")
+      const res = await fetch("https://radars.loicgombeaud.com/radars")
       this.radars = await res.json()
     },
   },

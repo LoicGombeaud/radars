@@ -42,9 +42,9 @@ export default {
   },
   methods: {
     async fetchStatistics() {
-      const resDaily = await fetch(`http://radars.loicgombeaud.com/statistics/daily/${this.radarId}/yesterday`)
+      const resDaily = await fetch(`https://radars.loicgombeaud.com/statistics/daily/${this.radarId}/yesterday`)
       this.dailyStatistics = await resDaily.json()
-      const resHourly = await fetch(`http://radars.loicgombeaud.com/statistics/hourly/${this.radarId}/yesterday`)
+      const resHourly = await fetch(`https://radars.loicgombeaud.com/statistics/hourly/${this.radarId}/yesterday`)
       this.hourlyStatistics = await resHourly.json()
 
       // Draw daily statistics pie chart
