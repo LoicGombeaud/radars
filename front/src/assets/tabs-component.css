@@ -110,3 +110,7 @@
     box-sizing: border-box;
     position: relative;
 }
+
+.radar-photo {
+    width: 400px
+}

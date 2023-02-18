@@ -140,7 +140,10 @@ export default {
           },
         }
       )
-    }
+    },
+    getPhotoUrl(radarId) {
+      return new URL(`../assets/img/${radarId}.png`, import.meta.url).href
+    },
   },
   mounted() {
     this.fetchStatistics()
@@ -161,6 +164,12 @@ export default {
     <tab name="Détail du jour (J - 1)">
       <h1>Radar : {{radarAddress}}</h1>
       <div ref="hourly"></div>
+    </tab>
+    <tab name="Photo">
+      <h1>Radar : {{radarAddress}}</h1>
+      <img
+        :src="getPhotoUrl(radarId)"
+        class="radar-photo"/>
     </tab>
     <tab name="Historique" :is-disabled="true">
     </tab>
