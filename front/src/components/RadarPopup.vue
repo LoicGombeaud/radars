@@ -28,6 +28,9 @@ export default {
     p_over_limit() {
       return Math.round(100 * this.n_over_limit / this.n_total)
     },
+    v_avg() {
+      return Math.round(10 * this.dailyStatistics.v_avg) / 10
+    },
   },
   components: {
     Tab,
@@ -149,7 +152,10 @@ export default {
   <tabs :options="{ useUrlFragment: false }">
     <tab name="Résumé du jour (J - 1)">
       <h1>Radar : {{radarAddress}}</h1>
-      {{n_total}} mesures effectuées, dont {{n_over_limit}} excès de vitesse ({{p_over_limit}}%)
+      {{n_total}} mesures effectuées, dont {{n_over_limit}} excès de vitesse ({{p_over_limit}}%)<br>
+      Vitesse moyenne : {{v_avg}} km/h<br>
+      Vitesse 85% : {{dailyStatistics.v_85p}} km/h<br>
+      Vitesse maximum: {{dailyStatistics.v_max}} km/h
       <div ref="daily"></div>
     </tab>
     <tab name="Détail du jour (J - 1)">
