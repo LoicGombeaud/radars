@@ -129,7 +129,7 @@
           radarMarker = L.marker([radar.latitude, radar.longitude]).addTo(map);
           radarMarker.bindPopup(
             "<b>Données J - 1</b><br>" +
-            "Adresse : " + radar.address +
+            "Adresse du radar : " + radar.address +
             "<div id='" + radar.id + "' style='display: flex'><div id='" + radar.id + "-chart'></div><div id='" + radar.id + "-pie'></div></div>", {minWidth: 900});
           radarMarker.addEventListener("click", loadStatistics(radar.id));
         }
