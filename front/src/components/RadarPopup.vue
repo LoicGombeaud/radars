@@ -142,7 +142,7 @@ export default {
       )
     },
     getPhotoUrl(radarId) {
-      return new URL(`../assets/img/${radarId}.png`, import.meta.url).href
+      return new URL(`../assets/img/${radarId}.webp`, import.meta.url).href
     },
   },
   mounted() {
