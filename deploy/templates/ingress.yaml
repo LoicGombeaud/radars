@@ -17,7 +17,7 @@ spec:
             name: {{ include "radars.fullname" . }}-front
             port:
               number: 80
-      - path: /radar
+      - path: /radars
         pathType: Prefix
         backend:
           service:
