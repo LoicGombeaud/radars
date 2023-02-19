@@ -1,5 +1,7 @@
 # Dataviz : radars pédagogiques de Bordeaux
 
+Ce projet est disponible ici : [https://radars.loicgombeaud.com](https://radars.loicgombeaud.com)
+
 ## Motivation
 
 Depuis quelques décennies, les rues ont changé de fonction : d'un lieu d'échange,
