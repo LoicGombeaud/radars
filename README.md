@@ -48,4 +48,12 @@ plaçant les radars sur une carte pour permettre à chacun de consulter les vite
 pratiquées dans son quartier ; il est codé en Vue.js 3 / Vite
 - `deploy` : mécanisme de déploiement et mise à jour ; ce projet étant hébergé
 sur un cluster Kubernetes, il s'agit d'un chart helm
-ce projet étant
+
+## Reste à faire
+
+Améliorations futures :
+- (front) meilleur affichage sur mobile
+- (front) explication de la motivation du projet
+- (front, back) historique sur N jours
+- (back) stabilisation de la connexion à la base de données
+- (deploy) mise en place de CI/CD (par exemple GitHub Actions)
