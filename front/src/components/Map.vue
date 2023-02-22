@@ -1,17 +1,24 @@
 <script>
+import Statistics from "./Statistics.vue"
+
 export default {
+  components: {
+    Statistics,
+  },
   data () {
     return {
-      offcanvasPlacement: "bottom",//window.innerWidth < 768 ? "bottom" : "start",
+      offcanvasBreakpoint: 500, //TODO adjust depending on graphs' width
+      offcanvasPlacement: "",
       offcanvasClasses: {
         offcanvas: true,
         show: false,
       },
+      activeRadar: "13H15",
     }
   },
   methods: {
     updateOffcanvasPlacement: function() {
-      this.offcanvasPlacement = window.innerWidth < 768 ? "bottom" : "start"
+      this.offcanvasPlacement = window.innerWidth < this.offcanvasBreakpoint ? "bottom" : "start"
     },
     updateOffcanvasClasses: function() {
       this.updateOffcanvasPlacement()
@@ -52,16 +59,11 @@ export default {
 
     <div :class="offcanvasClasses" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
       <div class="offcanvas-header">
-        <h5 class="offcanvas-title" id="offcanvasLabel">Offcanvas title</h5>
+        <h4 class="offcanvas-title" id="offcanvasLabel">TODO: Radar address</h4>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
-        <p>Statistiques</p>
-        <p>Statistiques</p>
-        <p>Statistiques</p>
-        <p>Statistiques</p>
-        <p>Statistiques</p>
-        <p>Statistiques</p>
+        <Statistics :radarId="activeRadar" />
       </div>
     </div>
   </div>

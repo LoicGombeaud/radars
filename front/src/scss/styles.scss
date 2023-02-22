@@ -1,4 +1,6 @@
-$offcanvas-horizontal-width:        100px;
-$offcanvas-vertical-height:         70vh;
+$offcanvas-close-size: 100px;
+
+$offcanvas-horizontal-width: calc(100vw - $offcanvas-close-size);
+$offcanvas-vertical-height:  calc(100vh - $offcanvas-close-size);
 
 @import "~bootstrap/scss/bootstrap";

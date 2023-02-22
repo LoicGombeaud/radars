@@ -22,5 +22,4 @@ export default {
 <template>
   <Menu />
   <Map />
-  <Statistics />
 </template>
