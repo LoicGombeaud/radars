@@ -6,17 +6,17 @@ front:
   replicaCount: 1
   image:
     repository: loicag/radars-front
-    tag: latest
+    tag: dev
     pullPolicy: Always
 
 back:
   replicaCount: 1
   image:
     repository: loicag/radars-back
-    tag: latest
+    tag: dev
     pullPolicy: Always
   database:
-    host: radars-mariadb
+    host: radars-dev-mariadb
     name: radars
     user: root
     password: root
