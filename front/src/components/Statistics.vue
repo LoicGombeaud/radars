@@ -23,19 +23,25 @@ export default {
 </script>
 
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col">
-        <RadarPhoto :radarId="radarId"/>
-      </div>
-      <div class="col">
-        <DailySummary :radarId="radarId"/>
-      </div>
-      <div class="col">
-        <DailyDetail :radarId="radarId"/>
-      </div>
-      <div class="col" v-if="showHistory">
-        <History :radarId="radarId"/>
+  <div class="offcanvas-header">
+    <h4 class="offcanvas-title" id="offcanvasLabel">TODO: Radar address</h4>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col">
+          <RadarPhoto :radarId="radarId"/>
+        </div>
+        <div class="col">
+          <DailySummary :radarId="radarId"/>
+        </div>
+        <div class="col">
+          <DailyDetail :radarId="radarId"/>
+        </div>
+        <div class="col" v-if="showHistory">
+          <History :radarId="radarId"/>
+        </div>
       </div>
     </div>
   </div>

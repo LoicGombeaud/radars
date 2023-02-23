@@ -82,13 +82,7 @@ export default {
       ref="offcanvas"
       aria-labelledby="offcanvasLabel"
     >
-      <div class="offcanvas-header">
-        <h4 class="offcanvas-title" id="offcanvasLabel">TODO: Radar address</h4>
-        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-      </div>
-      <div class="offcanvas-body">
-        <Statistics :radarId="activeRadarId" />
-      </div>
+      <Statistics :radarId="activeRadarId" />
     </div>
   </div>
 </template>
