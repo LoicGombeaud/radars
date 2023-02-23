@@ -1,19 +1,35 @@
 <script>
+import "leaflet/dist/leaflet.css"
+import {
+  LMap,
+  LMarker,
+  LTileLayer,
+} from "@vue-leaflet/vue-leaflet"
+import {
+  Offcanvas,
+} from "bootstrap"
 import Statistics from "./Statistics.vue"
+import { radars } from "../js/radars.js"
 
 export default {
   components: {
+    LMap,
+    LMarker,
+    LTileLayer,
     Statistics,
   },
   data () {
     return {
+      center: [44.84, -0.57],
+      zoom: 13,
       offcanvasBreakpoint: 500, //TODO adjust depending on graphs' width
       offcanvasPlacement: "",
       offcanvasClasses: {
         offcanvas: true,
         show: false,
       },
-      activeRadar: "13H15",
+      activeRadarId: "",
+      radars,
     }
   },
   methods: {
@@ -22,7 +38,7 @@ export default {
     },
     updateOffcanvasClasses: function() {
       this.updateOffcanvasPlacement()
-      var isShown = this.$el.querySelector("#offcanvas").classList.contains("show")
+      var isShown = this.$refs.offcanvas.classList.contains("show")
       this.offcanvasClasses = {
         offcanvas: true,
         show: isShown,
@@ -30,6 +46,12 @@ export default {
         "offcanvas-start": this.offcanvasPlacement == "start",
       }
     },
+    onClickMarker(event) {
+      this.activeRadarId = event.target.options.radarId
+      var myOffcanvasEl = document.getElementById("offcanvas")
+      var offcanvas = Offcanvas.getOrCreateInstance(myOffcanvasEl)
+      offcanvas.show()
+    }
   },
   mounted() {
     addEventListener("resize", this.updateOffcanvasClasses)
@@ -39,31 +61,40 @@ export default {
 </script>
 
 <template>
-  <div class="container">
-    <div class="row align-items-start">
-      <div class="border col-md order-last">Column one</div>
-      <div class="border col-md">Column two</div>
-      <div class="border col-md">Column three</div>
-    </div>
-    <div class="row bg-light rounded-5">
-      <div class="col">v<sub>moyenne</sub></div>
-      <div class="col">v<sub>85%</sub></div>
-      <div class="col">v<sub>maximum</sub></div>
-    </div>
-    <div class="row align-items-end">
-      <div class="border col">Column one</div>
-      <div class="border col">Column two</div>
-      <div class="border col">Column three</div>
-    </div>
-    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" aria-controls="offcanvas">Toggle offcanvas</button>
+  <div class="container-fluid px-0" id="map-container">
+    <l-map ref="map" v-model:zoom="zoom" :center="center">
+      <l-tile-layer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        layer-type="base"
+        name="OpenStreetMap"
+      ></l-tile-layer>
+      <l-marker
+        v-for="radar of radars.all"
+        :lat-lng="[radar.latitude, radar.longitude]"
+        :options="{radarId: radar.id}"
+        @click="onClickMarker"
+      ></l-marker>
+    </l-map>
+    <div
+      v-for="radar of radars.getAll()"
+      :ref="'radar-div-' + radar.id"
+      :lat-lng="[radar.latitude, radar.longitude]"
+      :options="{radarId: radar.id}"
+    ></div>
 
-    <div :class="offcanvasClasses" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
+    <div
+      :class="offcanvasClasses"
+      tabindex="-1"
+      id="offcanvas"
+      ref="offcanvas"
+      aria-labelledby="offcanvasLabel"
+    >
       <div class="offcanvas-header">
         <h4 class="offcanvas-title" id="offcanvasLabel">TODO: Radar address</h4>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">
-        <Statistics :radarId="activeRadar" />
+        <Statistics :radarId="activeRadarId" />
       </div>
     </div>
   </div>
