@@ -55,5 +55,4 @@ Améliorations futures :
 - (front) meilleur affichage sur mobile
 - (front) explication de la motivation du projet
 - (front, back) historique sur N jours
-- (back) stabilisation de la connexion à la base de données
 - (deploy) mise en place de CI/CD (par exemple GitHub Actions)

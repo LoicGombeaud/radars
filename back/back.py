@@ -7,12 +7,12 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 
-connection = mariadb.connect(host=os.getenv('DB_HOST'),
-                             database=os.getenv('DB_NAME'),
-                             user=os.getenv('DB_USER'),
-                             password=os.getenv('DB_PASSWORD'))
-connection.auto_reconnect = True
-cursor = connection.cursor(dictionary=True)
+pool = mariadb.ConnectionPool(host=os.getenv('DB_HOST'),
+                              database=os.getenv('DB_NAME'),
+                              user=os.getenv('DB_USER'),
+                              password=os.getenv('DB_PASSWORD'),
+                              pool_name='back',
+                              pool_size=20)
 
 app = FastAPI()
 
@@ -30,8 +30,13 @@ async def root():
 
 @app.get('/radars')
 async def list_radars():
+    pconn = pool.get_connection()
+    cursor = pconn.cursor()
     cursor.execute('SELECT id, address, latitude, longitude, speed_limit FROM sensor')
-    return cursor.fetchall()
+    res = cursor.fetchall()
+    cursor.close()
+    pconn.close()
+    return res
 
 @app.get('/statistics/hourly/{sensor_id}/{year}/{month}/{day}/{hour}')
 async def get_hourly_statistics(sensor_id, year, month, day, hour):
@@ -39,10 +44,15 @@ async def get_hourly_statistics(sensor_id, year, month, day, hour):
                                 int(month),
                                 int(day),
                                 int(hour))
+    pconn = pool.get_connection()
+    cursor = pconn.cursor()
     cursor.execute('SELECT * FROM statistic_hourly WHERE sensor_id = ? AND datetime = ?',
                    (sensor_id,
                     queried_datetime.isoformat()))
-    return cursor.fetchone()
+    res = cursor.fetchone()
+    cursor.close()
+    pconn.close()
+    return res
 
 @app.get('/statistics/hourly/{sensor_id}/{year}/{month}/{day}')
 async def get_hourly_statistics(sensor_id, year, month, day):
@@ -52,36 +62,56 @@ async def get_hourly_statistics(sensor_id, year, month, day):
     queried_datetime_end = datetime(int(year),
                                     int(month),
                                     int(day)+1)
+    pconn = pool.get_connection()
+    cursor = pconn.cursor()
     cursor.execute('SELECT * FROM statistic_hourly WHERE sensor_id = ? AND datetime >= ? AND datetime < ?',
                    (sensor_id,
                     queried_datetime_start.isoformat(),
                     queried_datetime_end.isoformat()))
-    return cursor.fetchall()
+    res = cursor.fetchall()
+    cursor.close()
+    pconn.close()
+    return res
 
 @app.get('/statistics/hourly/{sensor_id}/yesterday')
 async def get_hourly_statistics(sensor_id):
     queried_datetime_start = date.today() - timedelta(days=1)
     queried_datetime_end = date.today()
+    pconn = pool.get_connection()
+    cursor = pconn.cursor()
     cursor.execute('SELECT * FROM statistic_hourly WHERE sensor_id = ? AND datetime >= ? AND datetime < ?',
                    (sensor_id,
                     queried_datetime_start.isoformat(),
                     queried_datetime_end.isoformat()))
-    return cursor.fetchall()
+    res = cursor.fetchall()
+    cursor.close()
+    pconn.close()
+    return res
 
 @app.get('/statistics/daily/{sensor_id}/{year}/{month}/{day}')
 async def get_hourly_statistics(sensor_id, year, month, day):
     queried_datetime = datetime(int(year),
                                 int(month),
                                 int(day))
+    pconn = pool.get_connection()
+    cursor = pconn.cursor()
     cursor.execute('SELECT * FROM statistic_daily WHERE sensor_id = ? AND datetime = ?',
                    (sensor_id,
                     queried_datetime.isoformat()))
-    return cursor.fetchone()
+    res = cursor.fetchone()
+    cursor.close()
+    pconn.close()
+    return res
 
 @app.get('/statistics/daily/{sensor_id}/yesterday')
 async def get_hourly_statistics(sensor_id):
     queried_datetime = date.today() - timedelta(days=1)
+    pconn = pool.get_connection()
+    cursor = pconn.cursor()
     cursor.execute('SELECT * FROM statistic_daily WHERE sensor_id = ? AND datetime = ?',
                    (sensor_id,
                     queried_datetime.isoformat()))
-    return cursor.fetchone()
+    res = cursor.fetchone()
+    cursor.close()
+    pconn.close()
+    return res
