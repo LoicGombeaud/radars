@@ -5,16 +5,25 @@ export default {
   props: {
     radarId: String,
   },
+  watch: {
+    radarId() {
+      this.hourlyStatistics = this.getHourlyStatistics()
+    },
+  },
   data() {
     return {
-      statistics,
+      hourlyStatistics: {},
     }
   },
+  methods: {
+    async getHourlyStatistics() {
+      this.hourlyStatistics = await statistics.getHourlyStatistics(this.radarId)
+    },
+  }
 }
 </script>
 
 <template>
   <h5>Détail d'hier</h5>
-  <p>TODO graphique détaillé de {{ radarId }}</p>
-  <p>{{ statistics.lazyLoad(radarId).hourly }}</p>
+  <p>{{ hourlyStatistics }}</p>
 </template>

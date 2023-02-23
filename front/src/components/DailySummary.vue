@@ -5,16 +5,25 @@ export default {
   props: {
     radarId: String,
   },
+  watch: {
+    radarId() {
+      this.dailyStatistics = this.getDailyStatistics()
+    },
+  },
   data() {
     return {
-      statistics,
+      dailyStatistics: {},
     }
   },
+  methods: {
+    async getDailyStatistics() {
+      this.dailyStatistics = await statistics.getDailyStatistics(this.radarId)
+    },
+  }
 }
 </script>
 
 <template>
   <h5>Résumé d'hier</h5>
-  <p>TODO graphique résumé de {{ radarId }}</p>
-  <p>{{ statistics.lazyLoad(radarId).daily}}</p>
+  <p>{{ dailyStatistics }}</p>
 </template>

@@ -10,17 +10,22 @@ export const radars = reactive({
 })
 
 export const statistics = reactive({
-  "13H12": {
-    daily: "daily stats",
-    hourly: "hourly stats",
-  },
-  lazyLoad(radarId) {
-    if (!this[radarId]) {
-      this[radarId] = {
-        daily: `lazy-loaded daily stats for ${radarId}`,
-        hourly: `lazy-loaded hourly stats for ${radarId}`,
-      }
+  daily: {},
+  hourly: {},
+  async getDailyStatistics(radarId) {
+    if (radarId && !this.daily[radarId]) {
+      const res = await fetch(`${backUrl}/statistics/daily/${radarId}/yesterday`)
+      const data = await res.json()
+      this.daily[radarId] = data
+      return data
     }
-    return this[radarId]
+  },
+  async getHourlyStatistics(radarId) {
+    if (radarId && !this.hourly[radarId]) {
+      const res = await fetch(`${backUrl}/statistics/hourly/${radarId}/yesterday`)
+      const data = await res.json()
+      this.hourly[radarId] = data
+      return data
+    }
   },
 })
