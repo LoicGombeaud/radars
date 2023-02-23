@@ -3,10 +3,16 @@ import { reactive } from "vue"
 const backUrl = "https://radars.loicgombeaud.com"
 
 export const radars = reactive({
-  all: await (async () => {
+  all: [],
+  async getAll() {
+    if (this.all.length != 0) {
+      return this.all
+    }
     const res = await fetch(`${backUrl}/radars`)
-    return await res.json()
-  })(),
+    const data = await res.json()
+    this.all = data
+    return data
+  },
 })
 
 export const statistics = reactive({

@@ -29,7 +29,7 @@ export default {
         show: false,
       },
       activeRadarId: "",
-      radars: radars.all,
+      radars: [],
     }
   },
   methods: {
@@ -51,11 +51,15 @@ export default {
       var myOffcanvasEl = document.getElementById("offcanvas")
       var offcanvas = Offcanvas.getOrCreateInstance(myOffcanvasEl)
       offcanvas.show()
+    },
+    async fetchRadars() {
+      this.radars = await radars.getAll()
     }
   },
   mounted() {
     addEventListener("resize", this.updateOffcanvasClasses)
     this.updateOffcanvasClasses()
+    this.fetchRadars()
   },
 }
 </script>
