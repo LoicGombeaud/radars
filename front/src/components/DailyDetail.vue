@@ -1,4 +1,5 @@
 <script>
+import Plotly from "plotly.js-dist-min"
 import { statistics } from "../js/datastore.js"
 
 export default {
@@ -8,6 +9,64 @@ export default {
   watch: {
     radarId() {
       this.hourlyStatistics = this.getHourlyStatistics()
+    },
+    hourlyStatistics() {
+      // TODO don't try to draw the Promise
+      Plotly.newPlot(
+        this.$refs.detailPlot,
+        [
+          {
+            type: "scatter",
+            name: "Vitesse maximum",
+            x: this.hourlyStatistics.map(stat => new Date(stat.datetime).getHours() + "h"),
+            y: this.hourlyStatistics.map(stat => stat.v_max),
+            marker: {
+              color: "red",
+            },
+          },
+          {
+            type: "scatter",
+            name: "Vitesse 85%",
+            x: this.hourlyStatistics.map(stat => new Date(stat.datetime).getHours() + "h"),
+            y: this.hourlyStatistics.map(stat => stat.v_85p),
+            marker: {
+              color: "gray",
+            },
+          },
+          {
+            type: "scatter",
+            name: "Vitesse moyenne",
+            x: this.hourlyStatistics.map(stat => new Date(stat.datetime).getHours() + "h"),
+            y: this.hourlyStatistics.map(stat => stat.v_avg),
+            marker: {
+              color: "black",
+            },
+          },
+          {
+            type: "scatter",
+            name: "Vitesse limite autorisée",
+            x: this.hourlyStatistics.map(stat => new Date(stat.datetime).getHours() + "h"),
+            y: this.hourlyStatistics.map(stat => 30),
+            marker: {
+              color: "green",
+            },
+          },
+        ],
+        {
+          height: 400,
+          width: 400,
+          yaxis: {
+            rangemode: "tozero",
+            ticksuffix: " km/h",
+          },
+          legend: {
+            xanchor: "left",
+            x: 0.1,
+            yanchor: "bottom",
+            y: -.7,
+          },
+        }
+      )
     },
   },
   data() {
@@ -25,5 +84,5 @@ export default {
 
 <template>
   <h5>Détail d'hier</h5>
-  <p>{{ hourlyStatistics }}</p>
+  <div ref="detailPlot" id="detailPlot"></div>
 </template>
