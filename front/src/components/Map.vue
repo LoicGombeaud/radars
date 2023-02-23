@@ -9,7 +9,7 @@ import {
   Offcanvas,
 } from "bootstrap"
 import Statistics from "./Statistics.vue"
-import { radars } from "../js/radars.js"
+import { radars } from "../js/datastore.js"
 
 export default {
   components: {
@@ -29,7 +29,7 @@ export default {
         show: false,
       },
       activeRadarId: "",
-      radars,
+      radars: radars.all,
     }
   },
   methods: {
@@ -69,7 +69,7 @@ export default {
         name="OpenStreetMap"
       ></l-tile-layer>
       <l-marker
-        v-for="radar of radars.all"
+        v-for="radar of radars"
         :lat-lng="[radar.latitude, radar.longitude]"
         :options="{radarId: radar.id}"
         @click="onClickMarker"
@@ -82,7 +82,7 @@ export default {
       ref="offcanvas"
       aria-labelledby="offcanvasLabel"
     >
-      <Statistics :radarId="activeRadarId" />
+      <Statistics :radar="radars.find((radar) => radar.id == activeRadarId)" />
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <script>
-import { statistics } from "../js/statistics.js"
+import { statistics } from "../js/datastore.js"
 
 export default {
   props: {

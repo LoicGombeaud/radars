@@ -12,7 +12,10 @@ export default {
     History,
   },
   props: {
-    radarId: String,
+    radar: {
+      type: Object,
+      default: {},
+    },
   },
   data() {
     return {
@@ -24,23 +27,23 @@ export default {
 
 <template>
   <div class="offcanvas-header">
-    <h4 class="offcanvas-title" id="offcanvasLabel">TODO: Radar address</h4>
+    <h4 class="offcanvas-title" id="offcanvasLabel">{{ radar.address }}</h4>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
     <div class="container-fluid">
       <div class="row">
         <div class="col">
-          <RadarPhoto :radarId="radarId"/>
+          <RadarPhoto :radarId="radar.id"/>
         </div>
         <div class="col">
-          <DailySummary :radarId="radarId"/>
+          <DailySummary :radarId="radar.id"/>
         </div>
         <div class="col">
-          <DailyDetail :radarId="radarId"/>
+          <DailyDetail :radarId="radar.id"/>
         </div>
         <div class="col" v-if="showHistory">
-          <History :radarId="radarId"/>
+          <History :radarId="radar.id"/>
         </div>
       </div>
     </div>
