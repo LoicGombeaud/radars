@@ -76,13 +76,6 @@ export default {
       ></l-marker>
     </l-map>
     <div
-      v-for="radar of radars.getAll()"
-      :ref="'radar-div-' + radar.id"
-      :lat-lng="[radar.latitude, radar.longitude]"
-      :options="{radarId: radar.id}"
-    ></div>
-
-    <div
       :class="offcanvasClasses"
       tabindex="-1"
       id="offcanvas"
