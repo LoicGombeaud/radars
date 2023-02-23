@@ -22,6 +22,12 @@ export default {
     return {
       center: [44.84, -0.57],
       zoom: 13,
+      minZoom: 13,
+      maxZoom: 15,
+      maxBounds: [
+        [44.89, -0.65],
+        [44.81, -0.53],
+      ],
       offcanvasBreakpoint: 500, //TODO adjust depending on graphs' width
       offcanvasPlacement: "",
       offcanvasClasses: {
@@ -66,7 +72,18 @@ export default {
 
 <template>
   <div class="container-fluid px-0" id="map-container">
-    <l-map ref="map" v-model:zoom="zoom" :center="center">
+    <l-map
+      ref="map"
+      v-model:zoom="zoom"
+      :center="center"
+      :minZoom="minZoom"
+      :maxZoom="maxZoom"
+      :maxBounds="maxBounds"
+      :options="{
+        zoomControl: false,
+        attributionControl: false,
+      }"
+    >
       <l-tile-layer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         layer-type="base"
