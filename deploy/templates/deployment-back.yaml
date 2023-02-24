@@ -5,6 +5,10 @@ metadata:
   labels:
     {{- include "radars.labels" . | nindent 4 }}
     component: back
+  {{- with .Values.back.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.back.replicaCount }}
   selector:

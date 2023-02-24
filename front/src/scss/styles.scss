@@ -1,0 +1,14 @@
+$offcanvas-transition-duration: .5s;
+
+$offcanvas-close-size: 150px;
+
+$offcanvas-horizontal-width: min(600px, calc(100vw - $offcanvas-close-size));
+$offcanvas-vertical-height:  calc(100vh - $offcanvas-close-size);
+
+$btn-close-width: 1.5em;
+
+@import "~bootstrap/scss/bootstrap";
+
+#map-container {
+  height: calc(100vh - ($nav-link-height + 2 * $navbar-padding-y));
+}
