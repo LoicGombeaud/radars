@@ -33,19 +33,19 @@ export default {
   <div class="offcanvas-body">
     <div class="container-fluid">
       <div class="row">
-        <div class="col">
-          <RadarPhoto :radarId="radar.id"/>
-        </div>
-        <div class="col">
-          <DailySummary :radarId="radar.id"/>
-        </div>
-        <div class="col">
-          <DailyDetail :radarId="radar.id"/>
-        </div>
-        <div class="col" v-if="showHistory">
-          <History :radarId="radar.id"/>
-        </div>
+        <RadarPhoto :radarId="radar.id"/>
       </div>
+      <div class="row">
+        <DailySummary :radarId="radar.id"/>
+      </div>
+      <div class="row">
+        <DailyDetail :radarId="radar.id"/>
+      </div>
+      <!--
+      <div class="col" v-if="showHistory">
+        <History :radarId="radar.id"/>
+      </div>
+      -->
     </div>
   </div>
 </template>

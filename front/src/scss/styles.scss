@@ -1,8 +1,8 @@
 $offcanvas-transition-duration: .5s;
 
-$offcanvas-close-size: 100px;
+$offcanvas-close-size: 150px;
 
-$offcanvas-horizontal-width: calc(100vw - $offcanvas-close-size);
+$offcanvas-horizontal-width: min(600px, calc(100vw - $offcanvas-close-size));
 $offcanvas-vertical-height:  calc(100vh - $offcanvas-close-size);
 
 @import "~bootstrap/scss/bootstrap";
