@@ -67,9 +67,13 @@ export default {
           },
         ],
         {
+          xaxis: {
+            fixedrange: true,
+          },
           yaxis: {
             rangemode: "tozero",
             ticksuffix: " km/h",
+            fixedrange: true,
           },
           legend: {
             xanchor: "left",
