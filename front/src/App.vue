@@ -21,5 +21,5 @@ export default {
 
 <template>
   <Menu />
-  <Map />
+  <router-view />
 </template>

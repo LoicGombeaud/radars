@@ -53,10 +53,20 @@ export default {
       }
     },
     onClickMarker(event) {
-      this.activeRadarId = event.target.options.radarId
+      this.updateStatistics(event.target.options.radarId)
+    },
+    updateStatistics(radarId) {
+      this.activeRadarId = radarId
       var myOffcanvasEl = document.getElementById("offcanvas")
       var offcanvas = Offcanvas.getOrCreateInstance(myOffcanvasEl)
-      offcanvas.show()
+      if (radarId) {
+        this.$router.push(`/radar/${this.activeRadarId}`)
+        offcanvas.show()
+      }
+      else {
+        this.$router.push("/")
+        offcanvas.hide()
+      }
     },
     async fetchRadars() {
       this.radars = await radars.getAll()
@@ -66,6 +76,16 @@ export default {
     addEventListener("resize", this.updateOffcanvasClasses)
     this.updateOffcanvasClasses()
     this.fetchRadars()
+    var myOffcanvasEl = document.getElementById("offcanvas")
+    myOffcanvasEl.addEventListener("hide.bs.offcanvas", () => this.$router.push("/"))
+    this.$watch(
+      () => this.$route.params,
+      (params) => {
+        console.log(params)
+        this.updateStatistics(params.radarId)
+      }
+    )
+    this.updateStatistics(this.$route.params.radarId)
   },
 }
 </script>

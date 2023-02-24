@@ -13,10 +13,10 @@ import * as bootstrap from 'bootstrap'
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Carte</a>
+              <router-link class="nav-link active" aria-current="page" to="/">Carte</router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Explications</a>
+              <router-link class="nav-link" to="/explications">Explications</router-link>
             </li>
           </ul>
         </div>
