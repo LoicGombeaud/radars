@@ -31,7 +31,7 @@ async def root():
 @app.get('/radars')
 async def list_radars():
     pconn = pool.get_connection()
-    cursor = pconn.cursor()
+    cursor = pconn.cursor(dictionary=True)
     cursor.execute('SELECT id, address, latitude, longitude, speed_limit FROM sensor')
     res = cursor.fetchall()
     cursor.close()
@@ -45,7 +45,7 @@ async def get_hourly_statistics(sensor_id, year, month, day, hour):
                                 int(day),
                                 int(hour))
     pconn = pool.get_connection()
-    cursor = pconn.cursor()
+    cursor = pconn.cursor(dictionary=True)
     cursor.execute('SELECT * FROM statistic_hourly WHERE sensor_id = ? AND datetime = ?',
                    (sensor_id,
                     queried_datetime.isoformat()))
@@ -63,7 +63,7 @@ async def get_hourly_statistics(sensor_id, year, month, day):
                                     int(month),
                                     int(day)+1)
     pconn = pool.get_connection()
-    cursor = pconn.cursor()
+    cursor = pconn.cursor(dictionary=True)
     cursor.execute('SELECT * FROM statistic_hourly WHERE sensor_id = ? AND datetime >= ? AND datetime < ?',
                    (sensor_id,
                     queried_datetime_start.isoformat(),
@@ -94,7 +94,7 @@ async def get_hourly_statistics(sensor_id, year, month, day):
                                 int(month),
                                 int(day))
     pconn = pool.get_connection()
-    cursor = pconn.cursor()
+    cursor = pconn.cursor(dictionary=True)
     cursor.execute('SELECT * FROM statistic_daily WHERE sensor_id = ? AND datetime = ?',
                    (sensor_id,
                     queried_datetime.isoformat()))
