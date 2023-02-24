@@ -11,9 +11,7 @@ export default {
       this.dailyStatistics = this.getDailyStatistics()
     },
     dailyStatistics() {
-      if (this.hourlyStatistics instanceof Array) {
-        this.drawPlot()
-      }
+      this.drawPlot()
     }
   },
   data() {
