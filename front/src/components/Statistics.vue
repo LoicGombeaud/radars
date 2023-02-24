@@ -32,13 +32,13 @@ export default {
   </div>
   <div class="offcanvas-body">
     <div class="container-fluid">
-      <div class="row">
+      <div class="row shadow-lg p-3 mb-5 bg-white rounded">
         <RadarPhoto :radarId="radar.id"/>
       </div>
-      <div class="row">
+      <div class="row shadow-lg p-3 mb-5 bg-white rounded">
         <DailySummary :radarId="radar.id"/>
       </div>
-      <div class="row">
+      <div class="row shadow-lg p-3 mb-5 bg-white rounded">
         <DailyDetail :radarId="radar.id"/>
       </div>
       <!--
