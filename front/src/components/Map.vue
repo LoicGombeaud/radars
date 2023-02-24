@@ -26,7 +26,7 @@ export default {
       maxZoom: 15,
       maxBounds: [
         [44.89, -0.65],
-        [44.81, -0.53],
+        [44.805, -0.525],
       ],
       offcanvasBreakpoint: 500, //TODO adjust depending on graphs' width
       offcanvasPlacement: "",
