@@ -56,10 +56,10 @@ export default {
           direction: "clockwise",
           showlegend: false,
         }],
+        {},
         {
-          height: 400,
-          width: 400,
-        }
+          responsive: true,
+        },
       )
     }
   }

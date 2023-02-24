@@ -67,8 +67,6 @@ export default {
           },
         ],
         {
-          height: 400,
-          width: 400,
           yaxis: {
             rangemode: "tozero",
             ticksuffix: " km/h",
@@ -79,7 +77,10 @@ export default {
             yanchor: "bottom",
             y: -.7,
           },
-        }
+        },
+        {
+          responsive: true,
+        },
       )
     }
   }
