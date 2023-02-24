@@ -11,7 +11,9 @@ export default {
       this.dailyStatistics = this.getDailyStatistics()
     },
     dailyStatistics() {
-      this.drawPlot()
+      if (this.hourlyStatistics instanceof Array) {
+        this.drawPlot()
+      }
     }
   },
   data() {
@@ -58,7 +60,7 @@ export default {
           height: 400,
           width: 400,
         }
-      );
+      )
     }
   }
 }

@@ -11,7 +11,21 @@ export default {
       this.hourlyStatistics = this.getHourlyStatistics()
     },
     hourlyStatistics() {
-      // TODO don't try to draw the Promise
+      if (this.hourlyStatistics instanceof Array) {
+        this.drawPlot()
+      }
+    },
+  },
+  data() {
+    return {
+      hourlyStatistics: {},
+    }
+  },
+  methods: {
+    async getHourlyStatistics() {
+      this.hourlyStatistics = await statistics.getHourlyStatistics(this.radarId)
+    },
+    drawPlot() {
       Plotly.newPlot(
         this.$refs.detailPlot,
         [
@@ -67,17 +81,7 @@ export default {
           },
         }
       )
-    },
-  },
-  data() {
-    return {
-      hourlyStatistics: {},
     }
-  },
-  methods: {
-    async getHourlyStatistics() {
-      this.hourlyStatistics = await statistics.getHourlyStatistics(this.radarId)
-    },
   }
 }
 </script>
