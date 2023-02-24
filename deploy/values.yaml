@@ -27,7 +27,7 @@ etl:
     tag: latest
     pullPolicy: Always
   database:
-    host: radars-mariadb
+    host: radars-dev-mariadb
     name: radars
     user: root
     password: root
