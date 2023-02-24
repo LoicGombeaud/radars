@@ -81,7 +81,6 @@ export default {
     this.$watch(
       () => this.$route.params,
       (params) => {
-        console.log(params)
         this.updateStatistics(params.radarId)
       }
     )

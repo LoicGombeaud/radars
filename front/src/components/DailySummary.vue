@@ -11,13 +11,38 @@ export default {
       this.dailyStatistics = this.getDailyStatistics()
     },
     dailyStatistics() {
-      this.drawPlot()
+      if (this.dailyStatistics) {
+        this.drawPlot()
+      }
+      else {
+        this.dailyStatistics = {}
+      }
     }
   },
   data() {
     return {
       dailyStatistics: {},
     }
+  },
+  computed: {
+    n_over_30() {
+      return this.dailyStatistics.n_30_to_40 +
+             this.dailyStatistics.n_40_to_50 +
+             this.dailyStatistics.n_50_to_60 +
+             this.dailyStatistics.n_60_to_70 +
+             this.dailyStatistics.n_over_70
+    },
+    p_over_30() {
+      return Math.round(100 * this.n_over_30 / this.dailyStatistics.n_total * 10) / 10
+    },
+    n_over_50() {
+      return this.dailyStatistics.n_50_to_60 +
+             this.dailyStatistics.n_60_to_70 +
+             this.dailyStatistics.n_over_70
+    },
+    p_over_50() {
+      return Math.round(100 * this.n_over_50 / this.dailyStatistics.n_total * 10) / 10
+    },
   },
   methods: {
     async getDailyStatistics() {
@@ -65,6 +90,9 @@ export default {
 </script>
 
 <template>
-  <h5>Résumé d'hier</h5>
+  <p class="h3 mb-4">Répartition par tranche de vitesse</p>
+  <p>Sur {{ dailyStatistics.n_total }} mesures effectuées :</p>
+  <p>- {{ n_over_30 }} excès de vitesse, soit {{ p_over_30 }}%</p>
+  <p>- {{ n_over_50 }} grands excès de vitesse (>50 km/h), soit {{ p_over_50 }}%</p>
   <div ref="summaryPlot" id="summaryPlot"></div>
 </template>

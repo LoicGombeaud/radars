@@ -92,6 +92,10 @@ export default {
 </script>
 
 <template>
-  <h5>Détail d'hier</h5>
+  <p class="h3 mb-4">Vitesses calculées, heure par heure</p>
+  <p>Pour chaque créneau d'une heure, on affiche ici :</p>
+  <p>- la vitesse maximum mesurée sur ce créneau</p>
+  <p>- la vitesse 85% (cf. <router-link to="/explications">Explications</router-link>)</p>
+  <p>- la vitesse moyenne</p>
   <div ref="detailPlot" id="detailPlot"></div>
 </template>
