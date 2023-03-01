@@ -61,7 +61,8 @@ async def get_hourly_statistics(sensor_id, year, month, day):
                                       int(day))
     queried_datetime_end = datetime(int(year),
                                     int(month),
-                                    int(day)+1)
+                                    int(day)) + timedelta(days=1)
+
     pconn = pool.get_connection()
     cursor = pconn.cursor(dictionary=True)
     cursor.execute('SELECT * FROM statistic_hourly WHERE sensor_id = ? AND datetime >= ? AND datetime < ?',
