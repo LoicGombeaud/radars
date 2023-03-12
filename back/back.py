@@ -3,16 +3,21 @@ import os
 from datetime import date
 from datetime import datetime
 from datetime import timedelta
+from distutils.util import strtobool
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import create_engine, text
 
 
-pool = mariadb.ConnectionPool(host=os.getenv('DB_HOST'),
-                              database=os.getenv('DB_NAME'),
-                              user=os.getenv('DB_USER'),
-                              password=os.getenv('DB_PASSWORD'),
-                              pool_name='back',
-                              pool_size=20)
+host = os.getenv('DB_HOST')
+database = os.getenv('DB_NAME')
+user = os.getenv('DB_USER')
+password = os.getenv('DB_PASSWORD')
+echo = strtobool(os.getenv('DB_ECHO', default="false"))
+
+dsn = f"mariadb+mariadbconnector://{user}:{password}@{host}/{database}"
+
+engine = create_engine(dsn, echo=echo)
 
 app = FastAPI()
 
@@ -30,13 +35,9 @@ async def root():
 
 @app.get('/radars')
 async def list_radars():
-    pconn = pool.get_connection()
-    cursor = pconn.cursor(dictionary=True)
-    cursor.execute('SELECT id, address, latitude, longitude, speed_limit FROM sensor')
-    res = cursor.fetchall()
-    cursor.close()
-    pconn.close()
-    return res
+    with engine.connect() as conn:
+        res = conn.execute(text('SELECT id, address, latitude, longitude, speed_limit FROM sensor'))
+        return res.mappings().all()
 
 @app.get('/statistics/hourly/{sensor_id}/{year}/{month}/{day}/{hour}')
 async def get_hourly_statistics(sensor_id, year, month, day, hour):
@@ -44,15 +45,15 @@ async def get_hourly_statistics(sensor_id, year, month, day, hour):
                                 int(month),
                                 int(day),
                                 int(hour))
-    pconn = pool.get_connection()
-    cursor = pconn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM statistic_hourly WHERE sensor_id = ? AND datetime = ?',
-                   (sensor_id,
-                    queried_datetime.isoformat()))
-    res = cursor.fetchone()
-    cursor.close()
-    pconn.close()
-    return res
+    with engine.connect() as conn:
+        stmt = text('SELECT * '
+                    'FROM statistic_hourly '
+                    'WHERE sensor_id = :sensor_id '
+                    'AND datetime = :queried_datetime')
+        res = conn.execute(stmt,
+                           {'sensor_id': sensor_id,
+                            'queried_datetime': queried_datetime.isoformat()})
+        return res.mappings().one()
 
 @app.get('/statistics/hourly/{sensor_id}/{year}/{month}/{day}')
 async def get_hourly_statistics(sensor_id, year, month, day):
@@ -62,17 +63,17 @@ async def get_hourly_statistics(sensor_id, year, month, day):
     queried_datetime_end = datetime(int(year),
                                     int(month),
                                     int(day)) + timedelta(days=1)
-
-    pconn = pool.get_connection()
-    cursor = pconn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM statistic_hourly WHERE sensor_id = ? AND datetime >= ? AND datetime < ?',
-                   (sensor_id,
-                    queried_datetime_start.isoformat(),
-                    queried_datetime_end.isoformat()))
-    res = cursor.fetchall()
-    cursor.close()
-    pconn.close()
-    return res
+    with engine.connect() as conn:
+        stmt = text('SELECT * '
+                    'FROM statistic_hourly '
+                    'WHERE sensor_id = :sensor_id '
+                    'AND datetime >= :queried_datetime_start '
+                    'AND datetime < :queried_datetime_end')
+        res = conn.execute(stmt,
+                           {'sensor_id': sensor_id,
+                            'queried_datetime_start': queried_datetime_start.isoformat(),
+                            'queried_datetime_end': queried_datetime_end.isoformat()})
+        return res.mappings().all()
 
 @app.get('/statistics/hourly/{sensor_id}/yesterday')
 async def get_hourly_statistics_yesterday(sensor_id):
@@ -84,12 +85,14 @@ async def get_hourly_statistics_yesterday(sensor_id):
 
 @app.get('/statistics/hourly/{sensor_id}/latest')
 async def get_hourly_statistics_latest(sensor_id):
-    pconn = pool.get_connection()
-    cursor = pconn.cursor(dictionary=True)
-    cursor.execute('SELECT datetime FROM measurement ORDER BY datetime DESC LIMIT 1')
-    latest_datetime = cursor.fetchone()["datetime"]
-    cursor.close()
-    pconn.close()
+    with engine.connect() as conn:
+        stmt = text('SELECT datetime '
+                    'FROM measurement '
+                    'ORDER BY datetime DESC '
+                    'LIMIT 1')
+        res = conn.execute(stmt)
+        latest_datetime = res.mappings().one()["datetime"]
+
     return await get_hourly_statistics(sensor_id,
                                        latest_datetime.year,
                                        latest_datetime.month,
@@ -100,15 +103,15 @@ async def get_daily_statistics(sensor_id, year, month, day):
     queried_datetime = datetime(int(year),
                                 int(month),
                                 int(day))
-    pconn = pool.get_connection()
-    cursor = pconn.cursor(dictionary=True)
-    cursor.execute('SELECT * FROM statistic_daily WHERE sensor_id = ? AND datetime = ?',
-                   (sensor_id,
-                    queried_datetime.isoformat()))
-    res = cursor.fetchone()
-    cursor.close()
-    pconn.close()
-    return res
+    with engine.connect() as conn:
+        stmt = text('SELECT * '
+                    'FROM statistic_hourly '
+                    'WHERE sensor_id = :sensor_id '
+                    'AND datetime = :queried_datetime')
+        res = conn.execute(stmt,
+                           {'sensor_id': sensor_id,
+                            'queried_datetime': queried_datetime.isoformat()})
+        return res.mappings().one()
 
 @app.get('/statistics/daily/{sensor_id}/yesterday')
 async def get_daily_statistics_yesterday(sensor_id):
@@ -120,12 +123,13 @@ async def get_daily_statistics_yesterday(sensor_id):
 
 @app.get('/statistics/daily/{sensor_id}/latest')
 async def get_daily_statistics_yesterday(sensor_id):
-    pconn = pool.get_connection()
-    cursor = pconn.cursor(dictionary=True)
-    cursor.execute('SELECT datetime FROM measurement ORDER BY datetime DESC LIMIT 1')
-    latest_datetime = cursor.fetchone()["datetime"]
-    cursor.close()
-    pconn.close()
+    with engine.connect() as conn:
+        stmt = text('SELECT datetime '
+                    'FROM measurement '
+                    'ORDER BY datetime DESC '
+                    'LIMIT 1')
+        res = conn.execute(stmt)
+        latest_datetime = res.mappings().one()["datetime"]
     return await get_daily_statistics(sensor_id,
                                       latest_datetime.year,
                                       latest_datetime.month,
