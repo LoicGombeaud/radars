@@ -53,6 +53,7 @@ mariadb:
         longitude DECIMAL(10,7),
         position POINT NOT NULL,
         speed_limit INT,
+        display BOOLEAN,
         PRIMARY KEY(id),
         SPATIAL INDEX(position)
       );

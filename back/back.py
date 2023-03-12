@@ -36,7 +36,7 @@ async def root():
 @app.get('/radars')
 async def list_radars():
     with engine.connect() as conn:
-        res = conn.execute(text('SELECT id, address, latitude, longitude, speed_limit FROM sensor'))
+        res = conn.execute(text('SELECT id, address, latitude, longitude, speed_limit FROM sensor WHERE display = true'))
         return res.mappings().all()
 
 @app.get('/statistics/hourly/{sensor_id}/{year}/{month}/{day}/{hour}')
