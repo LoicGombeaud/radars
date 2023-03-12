@@ -105,7 +105,7 @@ async def get_daily_statistics(sensor_id, year, month, day):
                                 int(day))
     with engine.connect() as conn:
         stmt = text('SELECT * '
-                    'FROM statistic_hourly '
+                    'FROM statistic_daily '
                     'WHERE sensor_id = :sensor_id '
                     'AND datetime = :queried_datetime')
         res = conn.execute(stmt,
