@@ -63,7 +63,8 @@ mariadb:
         sensor_id VARCHAR(20),
         datetime DATETIME,
         speed INT,
-        PRIMARY KEY(id)
+        PRIMARY KEY(id),
+        INDEX(datetime)
       );
     create_table_statistic_hourly.sql: |
       CREATE TABLE statistic_hourly (
