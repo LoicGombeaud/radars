@@ -35,3 +35,7 @@ spec:
             name: {{ include "radars.fullname" . }}-back
             port:
               number: 80
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host }}
+    secretName: radars
