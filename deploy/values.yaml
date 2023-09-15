@@ -9,9 +9,6 @@ front:
     tag: latest
     pullPolicy: Always
   annotations:
-    keel.sh/policy: force
-    keel.sh/trigger: poll
-    keel.sh/pollSchedule: '@every 10s'
 
 back:
   replicaCount: 1
@@ -25,9 +22,6 @@ back:
     user: root
     password: root
   annotations:
-    keel.sh/policy: force
-    keel.sh/trigger: poll
-    keel.sh/pollSchedule: '@every 10s'
 
 etl:
   image:
