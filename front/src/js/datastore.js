@@ -1,6 +1,6 @@
 import { reactive } from "vue"
 
-const backUrl = "https://radars.loicgombeaud.com"
+const backUrl = "https://radars.velo-cite.org"
 
 export const radars = reactive({
   all: [],
